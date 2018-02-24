@@ -28,8 +28,32 @@ export default {
       return true
     })
 
+    mockList.sort((ae, be) => {
+      let filed = sort.substr(1);
+      let a = ae[filed],
+        b = be[filed]
+      if (sort.startsWith('+')) {
+
+        if (a === b) {
+          return 0;
+        }
+        if (typeof a === typeof b) {
+          return a < b ? -1 : 1;
+        }
+        return typeof a < typeof b ? -1 : 1;
+      } else {
+        if (a === b) {
+          return 0;
+        }
+        if (typeof a === typeof b) {
+          return b < a ? -1 : 1;
+        }
+        return typeof b < typeof a ? -1 : 1;
+      }
+    })
+
     const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
-    
+
     return {
       code: 20000,
       data: {

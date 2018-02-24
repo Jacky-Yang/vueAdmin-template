@@ -23,7 +23,7 @@
       <!-- <el-checkbox class="filter-item" style='margin-left:15px;' @change='tableKey=tableKey+1' v-model="showReviewer">{{$t('table.reviewer')}}</el-checkbox> -->
     </div>
 
-    <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
+    <el-table :key='tableKey' :data="list" @sort-change="handleSort" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
       style="width: 100%">
       <el-table-column align="center" :label="$t('table.id')" width="65">
         <template slot-scope="scope">
@@ -41,7 +41,7 @@
           <el-tag>{{scope.row.type | typeFilter}}</el-tag>
         </template>
       </el-table-column> -->
-      <el-table-column width="110px" align="center" :label="$t('user.name')">
+      <el-table-column width="110px" align="center" :label="$t('user.name')" sortable="custom" prop="userName">
         <template slot-scope="scope">
           <span class="link-type" @click="handleUpdate(scope.row)">{{scope.row.userName}}</span>
         </template>
@@ -62,7 +62,7 @@
           <span>{{scope.row.sex | sexFilter}}</span>
         </template>
       </el-table-column>
-      <el-table-column  :label="$t('user.email')" align="center">
+      <el-table-column  :label="$t('user.email')" align="center" sortable="custom" prop="email">
         <template slot-scope="scope">
           <span>{{scope.row.email}}</span>
         </template>
@@ -203,7 +203,7 @@ export default {
         email: undefined,
 
         // importance: undefined,
-        title: undefined,
+        // title: undefined,
         type: undefined,
         sort: '+id'
       },
@@ -275,6 +275,11 @@ export default {
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
+    },
+    handleSort(sort) {
+      this.listQuery.sort = sort.order === 'descending' ? '-' + sort.prop : '+' + sort.prop
+      this.getList()
+      console.log(sort)
     },
     handleSizeChange(val) {
       if (this.listQuery.limit === val) {
