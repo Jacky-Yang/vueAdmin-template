@@ -72,6 +72,19 @@ export const constantRouterMap = [
     ]
   },
 
+  {
+    path: '/user',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        name: 'User',
+        component: () => import('@/views/user/list'),
+        meta: { title: 'User', icon: 'user' }
+      }
+    ]
+  },
+
   { path: '*', redirect: '/404', hidden: true }
 ]
 
