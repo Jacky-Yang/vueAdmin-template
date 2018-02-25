@@ -99,7 +99,7 @@
     </div>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="right" label-width="70px" style='width: 400px; margin-left:50px;' size="mini">
 <!--         <el-form-item :label="$t('user.name')" prop="type">
           <el-select class="filter-item" v-model="temp.type" placeholder="Please select">
             <el-option v-for="item in  calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key">
@@ -157,7 +157,8 @@
 </template>
 
 <script>
-import { fetchList, fetchUser, createUser, updateUser } from '@/api/user'
+import { validateEmail } from '@/utils/validate'
+import { fetchList, createUser, updateUser } from '@/api/user'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 
@@ -190,6 +191,13 @@ export default {
     waves
   },
   data() {
+    const emailValidator = (rule, value, callback) => {
+      if (value.trim() !== '' && !validateEmail(value)) {
+        callback(new Error('Please enter the correct user name'))
+      } else {
+        callback()
+      }
+    }
     return {
       tableKey: 0,
       list: null,
@@ -221,7 +229,7 @@ export default {
 
         // importance: 1,
         remark: 'remark',
-        timestamp: new Date(),
+        // timestamp: new Date(),
         // title: '',
         type: '',
         status: 'NOMAIL'
@@ -239,6 +247,7 @@ export default {
         // type: [{ required: true, message: 'type is required', trigger: 'change' }],
         // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         // title: [{ required: true, message: 'title is required', trigger: 'blur' }],
+        email: [{ required: false, message: 'email is not correct', trigger: 'blur', validator:  emailValidator}],
         userName: [{ required: true, message: 'user name is required', trigger: 'blur' }]
       },
       // downloadLoading: false
@@ -311,7 +320,7 @@ export default {
 
         // importance: 1,
         remark: '',
-        timestamp: new Date(),
+        // timestamp: new Date(),
         // title: '',
         status: 'NOMAIL',
         type: ''
@@ -345,7 +354,7 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
+      // this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -356,7 +365,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          // tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           updateUser(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {

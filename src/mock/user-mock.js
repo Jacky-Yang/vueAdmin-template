@@ -29,26 +29,26 @@ export default {
     })
 
     mockList.sort((ae, be) => {
-      let filed = sort.substr(1);
-      let a = ae[filed],
+      const filed = sort.substr(1);
+      const a = ae[filed],
         b = be[filed]
       if (sort.startsWith('+')) {
 
         if (a === b) {
-          return 0;
+          return 0
         }
         if (typeof a === typeof b) {
-          return a < b ? -1 : 1;
+          return a < b ? -1 : 1
         }
-        return typeof a < typeof b ? -1 : 1;
+        return typeof a < typeof b ? -1 : 1
       } else {
         if (a === b) {
-          return 0;
+          return 0
         }
         if (typeof a === typeof b) {
-          return b < a ? -1 : 1;
+          return b < a ? -1 : 1
         }
-        return typeof b < typeof a ? -1 : 1;
+        return typeof b < typeof a ? -1 : 1
       }
     })
 
