@@ -20,7 +20,7 @@ export default {
   fetchList: (query) => {
     const { userName, sex, email, page = 1, limit = 20, sort } = param2Obj(query.url)
 
-    let mockList = List.filter(item => {
+    const mockList = List.filter(item => {
       // if (importance && item.importance !== +importance) return false
       if (userName && item.userName.indexOf(userName) < 0) return false
       if (sex && item.sex !== sex) return false
@@ -29,11 +29,10 @@ export default {
     })
 
     mockList.sort((ae, be) => {
-      const filed = sort.substr(1);
-      const a = ae[filed],
-        b = be[filed]
+      const filed = sort.substr(1)
+      const a = ae[filed]
+      const b = be[filed]
       if (sort.startsWith('+')) {
-
         if (a === b) {
           return 0
         }
@@ -60,6 +59,18 @@ export default {
         total: mockList.length,
         items: pageList
       }
+    }
+  },
+  createUser: (data) => {
+    return {
+      code: 20000,
+      data: 'success'
+    }
+  },
+  updateUser() {
+    return {
+      code: 20000,
+      data: 'success'
     }
   }
 }

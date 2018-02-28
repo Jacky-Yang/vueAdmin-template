@@ -27,6 +27,9 @@ Mock.mock(/\/search\/user/, 'get', remoteSearchAPI.searchUser)
 // 账单相关
 Mock.mock(/\/transaction\/list/, 'get', transactionAPI.getList)
 
-Mock.mock(/\/user\/list/, 'get', userAPI.fetchList)
+// 用户管理相关
+Mock.mock(/\/sysset\/user\/list/, 'get', userAPI.fetchList)
+Mock.mock(/\/sysset\/user\/create/, 'post', userAPI.createUser)
+Mock.mock(/\/sysset\/user\/update/, 'post', userAPI.updateUser)
 
 export default Mock
