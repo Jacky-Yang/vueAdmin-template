@@ -213,7 +213,7 @@ export default {
         // importance: undefined,
         // title: undefined,
         type: undefined,
-        sort: '+id'
+        sort: 'id,desc'
       },
       // importanceOptions: [1, 2, 3],
       // calendarTypeOptions,
@@ -286,7 +286,7 @@ export default {
       this.getList()
     },
     handleSort(sort) {
-      this.listQuery.sort = sort.order === 'descending' ? '-' + sort.prop : '+' + sort.prop
+      this.listQuery.sort = sort.order === 'descending' ? sort.prop + ',desc' : sort.prop + ',asc'
       this.getList()
       console.log(sort)
     },
