@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-const _import = require('./_import_' + process.env.NODE_ENV)
+// const _import = require('./_import_' + process.env.NODE_ENV)
 // in development-env not use lazy-loading, because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
 // detail: https://panjiachen.github.io/vue-element-admin-site/#/lazy-loading
 
@@ -41,8 +41,16 @@ export const constantRouterMap = [
       path: 'dashboard',
       component: () => import('@/views/dashboard/index')
     }]
-  },
+  }
+]
 
+export default new Router({
+  // mode: 'history', //后端支持可开
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+})
+
+export const asyncRouterMap = [
   {
     path: '/example',
     component: Layout,
@@ -54,13 +62,22 @@ export const constantRouterMap = [
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        meta: { title: 'Table', icon: 'table' },
+        menu: 'table'
       },
       {
         path: 'tree',
         name: 'Tree',
         component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        meta: { title: 'Tree', icon: 'tree' },
+        menu: 'tree'
+      },
+      {
+        path: 'jtree',
+        name: 'jTree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: 'jTree', icon: 'tree' },
+        menu: 'jtree'
       }
     ]
   },
@@ -81,34 +98,32 @@ export const constantRouterMap = [
   {
     path: '/user',
     component: Layout,
+    menu: 'user',
     children: [
       {
         path: 'list',
         name: 'User',
         component: () => import('@/views/sysset/user-list'),
-        meta: { title: 'User', icon: 'user' }
+        meta: { title: 'User', icon: 'user' },
+        menu: 'user'
       }
     ]
   },
   {
     path: '/role',
     component: Layout,
+    menu: 'role',
     children: [
       {
         path: 'list',
         name: 'Role',
         component: () => import('@/views/sysset/role-list'),
-        meta: { title: 'Role', icon: 'role' }
+        meta: { title: 'Role', icon: 'role' },
+        menu: 'role'
       }
     ]
   },
 
   { path: '*', redirect: '/404', hidden: true }
 ]
-
-export default new Router({
-  // mode: 'history', //后端支持可开
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
 
